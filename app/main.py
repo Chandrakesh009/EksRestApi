@@ -1,9 +1,17 @@
-from flask import Flask
+from flask import Flask, request
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/result", methods=["POST", "GET"])
 def hello():
-    return "Hello from Python!"
+    output = request.get_json()
+    if len(output.keys()) < 2:
+        return {"Status":"Bad response"}
+
+    num1 = int(output['num1'])
+    num2 = int(output['num2'])
+    cal={}
+    cal['addition'] = num1+num2
+    return (cal)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(debug=True, port=2000)
